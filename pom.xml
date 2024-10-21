@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.weiyu</groupId>
+    <artifactId>easy-car-pool-proto</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.25.3</version>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- 定义 Protobuf Maven 插件 -->
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.6.1</version>
+                <configuration>
+                    <!-- 指定 .proto 文件所在的目录 -->
+                    <protoSourceRoot>${basedir}/src/main/resources/proto</protoSourceRoot>
+                    <!-- 指定 protoc 工具的 Maven 坐标， ${protobuf.version} 和 ${os.detected.classifier} 是占位符，分别表示 Protobuf 版本和操作系统分类器 -->
+                    <protocArtifact>com.google.protobuf:protoc:3.25.3:exe:${os.detected.classifier}</protocArtifact>
+                    <!-- 指定生成的 Java 文件的输出目录 -->
+                    <outputDirectory>${project.basedir}/src/main/resources/proto/java</outputDirectory>
+                    <!-- 生成文件前是否清空目标目录，设置为 false 以防止误删项目文件 -->
+                    <!-- <clearOutputDirectory>false</clearOutputDirectory> -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!-- 执行 Protobuf 编译目标 -->
+                            <goal>compile</goal>
+                            <!-- 执行自定义的 Protobuf 编译目标 -->
+                            <goal>compile-custom</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <extensions>
+            <!-- 这个扩展必须添加，用于检测操作系统并生成适当的分类器（os.detected.classifier），确保 protoc 工具能够正确运行在不同操作系统上 -->
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.7.1</version>
+            </extension>
+        </extensions>
+    </build>
+
+
+</project>
